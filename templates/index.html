@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fair Copy — Grammar Checker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F7F3EA;
+    --paper-shadow: rgba(35, 30, 20, 0.18);
+    --ink: #232323;
+    --pencil: #8A8578;
+    --red: #B33A2E;
+    --sage: #64754F;
+    --rule: #DAD3C0;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--ink);
+    background-image:
+      radial-gradient(ellipse at top left, #2c2c2a 0%, var(--ink) 55%);
+    font-family: 'Lora', Georgia, serif;
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    padding: 64px 20px 100px;
+  }
+
+  .desk {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  .masthead {
+    text-align: left;
+    margin-bottom: 28px;
+    color: var(--paper);
+  }
+
+  .masthead .kicker {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--pencil);
+    letter-spacing: 0.02em;
+  }
+
+  .masthead h1 {
+    font-size: 34px;
+    font-weight: 600;
+    font-style: italic;
+    margin: 6px 0 0;
+    line-height: 1.15;
+  }
+
+  .sheet {
+    background: var(--paper);
+    box-shadow: 0 18px 40px var(--paper-shadow), 0 2px 0 #e8e2d0 inset;
+    padding: 40px 40px 34px;
+    position: relative;
+  }
+
+  .sheet::before {
+    content: "";
+    position: absolute;
+    top: 10px; left: 10px; right: -10px; bottom: -10px;
+    background: #EFE9D8;
+    z-index: -1;
+  }
+
+  .sheet-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--pencil);
+    margin: 0 0 14px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 160px;
+    resize: vertical;
+    border: none;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent, transparent 30px,
+        var(--rule) 31px
+      );
+    background-position-y: 6px;
+    line-height: 31px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 15px;
+    color: var(--ink);
+    padding: 4px 2px;
+    outline: none;
+  }
+
+  textarea::placeholder {
+    color: #a39d8c;
+    font-style: italic;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+  }
+
+  button {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--paper);
+    background: var(--red);
+    border: none;
+    padding: 12px 26px;
+    cursor: pointer;
+    position: relative;
+    transform: rotate(-1deg);
+    box-shadow: 0 3px 0 #7c281f;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  button:hover {
+    transform: rotate(-1deg) translateY(-1px);
+    box-shadow: 0 4px 0 #7c281f;
+  }
+
+  button:active {
+    transform: rotate(-1deg) translateY(2px);
+    box-shadow: 0 1px 0 #7c281f;
+  }
+
+  .result {
+    margin-top: 32px;
+    padding-top: 26px;
+    border-top: 2px dashed var(--rule);
+  }
+
+  .result-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--sage);
+    margin: 0 0 10px;
+  }
+
+  .result-label::before {
+    content: "✓ ";
+  }
+
+  .clean-copy {
+    font-size: 18px;
+    line-height: 1.7;
+    margin: 0;
+    padding: 18px 20px;
+    background: #FFFEFA;
+    border-left: 3px solid var(--sage);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 28px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--pencil);
+  }
+</style>
+</head>
+<body>
+  <div class="desk">
+    <div class="masthead">
+  <h1>Fair Copy</h1>
+</div>
+
+    <div class="sheet">
+      <p class="sheet-label"><span>draft</span><span>en-US</span></p>
+      <form action="/check" method="post">
+        <textarea name="user_text" placeholder="Paste your draft here...">{{ original or "" }}</textarea>
+        <div class="actions">
+          <button type="submit">Mark it up</button>
+        </div>
+      </form>
+
+      {% if corrected %}
+      <div class="result">
+        <p class="result-label">clean copy</p>
+        <p class="clean-copy">{{ corrected }}</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <footer>a small tool for tired writers</footer>
+  </div>
+</body>
+</html>
