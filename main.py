@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 import requests
+from mangum import Mangum
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -28,4 +29,6 @@ def check_grammar(request: Request, user_text: str = Form(...)):
     return templates.TemplateResponse(request, "index.html", {
         "original": user_text,
         "corrected": corrected_text
+        
+    handler = Mangum(app)
     })

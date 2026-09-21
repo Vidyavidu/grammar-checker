@@ -166,6 +166,13 @@
     border-left: 3px solid var(--sage);
   }
 
+  .error {
+    margin-top: 18px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--red);
+  }
+
   footer {
     text-align: center;
     margin-top: 28px;
@@ -189,6 +196,10 @@
           <button type="submit">Mark it up</button>
         </div>
       </form>
+
+      {% if error %}
+      <p class="error">{{ error }}</p>
+      {% endif %}
 
       {% if corrected %}
       <div class="result">
