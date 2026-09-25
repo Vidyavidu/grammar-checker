@@ -1,10 +1,12 @@
+import os
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 import requests
-from mangum import Mangum
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 @app.get("/")
 def read_root(request: Request):
@@ -29,6 +31,4 @@ def check_grammar(request: Request, user_text: str = Form(...)):
     return templates.TemplateResponse(request, "index.html", {
         "original": user_text,
         "corrected": corrected_text
-        
-    handler = Mangum(app)
     })
